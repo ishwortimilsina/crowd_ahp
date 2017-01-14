@@ -16,12 +16,8 @@ def findFault(originalMatrix):
 			eigen_vector = ce.calculateEigenVector(tempMatrix)
 			
 			# find lamdamax of each modified matrix
-			faultDict[str(i)+"_"+str(j)] = cc.consistency(tempMatrix, eigen_vector)[2]
+			faultDict[str(i+1)+"_"+str(j+1)] = cc.consistency(tempMatrix, eigen_vector)[2]
 
 			tempMatrix = np.array(originalMatrix)
 
-	#find key with maximum value
-	v=list(faultDict.values())
-	k=list(faultDict.keys())
-
-	print k[v.index(max(v))]
+	return faultDict

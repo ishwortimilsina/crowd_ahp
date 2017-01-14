@@ -17,7 +17,7 @@ def consistency(originalMatrix, eigenVector):
 
 	lambdaMax = totalSum/m
 
-	consIndex = (lambdaMax - m)/(m-1)
+	consIndex = abs(lambdaMax - m)/(m-1)
 
 	consRatio = consIndex/randomIndex[m-1]
 
