@@ -6,6 +6,7 @@ import create_criteria_matrix as cm
 import create_alternatives_matrix as am
 import find_faulty_comparisons as ffc
 import calculate_correct_value as ccv
+import correctify_fault as cf
 
 def processOneMatrix(goal, criteria=None):
 	if (criteria):
@@ -23,24 +24,12 @@ def processOneMatrix(goal, criteria=None):
 	if consistencyRatio[0] == True:
 		return eigenVector
 	else:
+		print "Matrix is inconsistent. Trying to resolve this"
 		# find faulty comparison and calculate value that is optimal
 		fault_detail = ccv.calculateCorrectValue(originalMatrix)
 
-		matIndex = fault_detail[0]
-		
-		splitIndex = matIndex.split('_')
-		i = int(splitIndex[0])-1
-		j = int(splitIndex[1])-1
-		tempMatrix = np.array(originalMatrix)
-
-		# change the faulty comparisons to new correct value
-		tempMatrix[i][j] = float(fault_detail[1])
-		tempMatrix[j][i] = 1/float(fault_detail[1]) #reciprocal
-
-		eigen_vector = ce.calculateEigenVector(tempMatrix)
-		
-		#return the eigen vector
-		return eigen_vector
-
-
-
+		# return new eigenvector with consistent comparisons
+		if (criteria):
+			return cf.correctifyFault(fault_detail, originalMatrix, goal, criteria)
+		else:
+			return cf.correctifyFault(fault_detail, originalMatrix, goal)

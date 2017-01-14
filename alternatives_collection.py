@@ -9,8 +9,8 @@ def getAllAlternatives(goal):
 	conn = sqlite3.connect(sqlite_file)
 	c = conn.cursor()
 
-	c.execute('SELECT al.alternative_id FROM {tn1} g, {tn2} al WHERE g.ROWID=al.goal_id and g.goal="{goal}"'.\
-					format(tn1='goals', tn2='alternatives', goal=goal))
+	c.execute('SELECT alternative_id FROM {tn} WHERE goal_id={goal}'.\
+					format(tn='alternatives', goal=goal))
 	allAlternatives = []
 	for row in c.fetchall():
 		allAlternatives.append(row[0])
@@ -29,8 +29,8 @@ def getAllAlternativesComparisons(goal, criteria):
 	c = conn.cursor()
 
 
-	query = 'SELECT al.alternative_1_id, al.Alternative_2_id, al.value, al.criteria_id FROM {tn1} g, {tn2} al WHERE g.ROWID=al.goal_id and g.goal="{goal}" and al.criteria_id={criteria}'.\
-        format(tn1='goals', tn2='alternatives_comparisons', goal=goal, criteria=criteria)
+	query = 'SELECT alternative_1_id, Alternative_2_id, value, criteria_id FROM {tn} WHERE goal_id={goal} and criteria_id={criteria}'.\
+        format(tn='alternatives_comparisons', goal=goal, criteria=criteria)
 
 	allAlternativesComparisons = []
 

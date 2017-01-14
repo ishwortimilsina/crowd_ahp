@@ -9,8 +9,10 @@ def getAllCriteria(goal):
 	conn = sqlite3.connect(sqlite_file)
 	c = conn.cursor()
 
-	c.execute('SELECT cr.criteria_id FROM {tn1} g, {tn2} cr WHERE g.ROWID=cr.goal_id and g.goal="{goal}"'.\
-					format(tn1='goals', tn2='criteria', goal=goal))
+	query = 'SELECT criteria_id FROM {tn} WHERE goal_id={goal}'.\
+					format(tn='criteria', goal=goal)
+	c.execute(query)
+	
 	allCriteria = []
 	for row in c.fetchall():
 		allCriteria.append(row[0])
@@ -29,8 +31,8 @@ def getAllCriteriaComparisons(goal):
 	c = conn.cursor()
 
 
-	query = 'SELECT cr.criteria_1_id, cr.criteria_2_id, cr.value FROM {tn1} g, {tn2} cr WHERE g.ROWID=cr.goal_id and g.goal="{goal}"'.\
-        format(tn1='goals', tn2='criteria_comparisons', goal=goal)
+	query = 'SELECT criteria_1_id, criteria_2_id, value FROM {tn} WHERE goal_id={goal}'.\
+        format(tn='criteria_comparisons', goal=goal)
 
 	allCriteriaComparisons = []
 	c.execute(query)
