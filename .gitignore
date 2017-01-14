@@ -1,0 +1,12 @@
+#sqlite
+*.exe
+*.sqlite
+
+#csv files
+*.csv
+
+#folder
+/sqlite-tools
+
+#compiled python files
+*.pyc
