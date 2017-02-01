@@ -31,7 +31,7 @@ def getAllCriteriaComparisons(goal):
 	c = conn.cursor()
 
 
-	query = 'SELECT criteria_1_id, criteria_2_id, value FROM {tn} WHERE goal_id={goal}'.\
+	query = 'SELECT criteria_1_id, criteria_2_id, value FROM {tn} WHERE goal_id={goal} ORDER BY ROWID'.\
         format(tn='criteria_comparisons', goal=goal)
 
 	allCriteriaComparisons = []

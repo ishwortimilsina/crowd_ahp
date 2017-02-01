@@ -10,3 +10,5 @@
 
 #compiled python files
 *.pyc
+
+test.py

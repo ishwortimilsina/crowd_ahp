@@ -29,9 +29,9 @@ def getAllAlternativesComparisons(goal, criteria):
 	c = conn.cursor()
 
 
-	query = 'SELECT alternative_1_id, Alternative_2_id, value, criteria_id FROM {tn} WHERE goal_id={goal} and criteria_id={criteria}'.\
+	query = 'SELECT alternative_1_id, Alternative_2_id, value, criteria_id FROM {tn} WHERE goal_id={goal} and criteria_id={criteria} ORDER BY ROWID'.\
         format(tn='alternatives_comparisons', goal=goal, criteria=criteria)
-
+	
 	allAlternativesComparisons = []
 
 	c.execute(query)

@@ -4,7 +4,6 @@ import calculate_eigen as ce
 import calculate_consistency as cc
 import create_criteria_matrix as cm
 import create_alternatives_matrix as am
-import find_faulty_comparisons as ffc
 import calculate_correct_value as ccv
 import correctify_fault as cf
 
@@ -15,11 +14,11 @@ def processOneMatrix(goal, criteria=None):
 		originalMatrix = cm.getCriteriaMatrix(goal)
 
 	#calculate eigen vector
-	eigenVector = ce.calculateEigenVector(originalMatrix);
-
+	eigenVector = ce.calculateEigenVector(originalMatrix)
+	
 	#calculate consistency
 	consistencyRatio = cc.consistency(originalMatrix, eigenVector)
-
+	
 	# if consistent, return eigenvector other find faulty comparison and correct
 	if consistencyRatio[0] == True:
 		return eigenVector
@@ -30,6 +29,6 @@ def processOneMatrix(goal, criteria=None):
 
 		# return new eigenvector with consistent comparisons
 		if (criteria):
-			return cf.correctifyFault(fault_detail, originalMatrix, goal, criteria)
+			return cf.correctifyFault(fault_detail, originalMatrix, goal, criteria, 10)
 		else:
-			return cf.correctifyFault(fault_detail, originalMatrix, goal)
+			return cf.correctifyFault(fault_detail, originalMatrix, goal, None, 10)

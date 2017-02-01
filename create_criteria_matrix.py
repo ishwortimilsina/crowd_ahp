@@ -1,6 +1,7 @@
 import sqlite3
 import numpy as np
 import criteria_collection as coll
+import operator
 
 def createMatrix(size, comparisons):
 	arr = np.zeros((size,size))
@@ -20,15 +21,19 @@ def createMatrix(size, comparisons):
 # This finds a representative value out of a given array
 def getRepresentation(arr):
 	total = 0
+	count = 0
 	for value in arr:
+		if count == 10:
+			break
 		total += value
-
-	return total/len(arr)
+		count += 1
+	return total/count
 
 
 # This function return a new dictionary with representative value for each key
 def getAllRepresentativeCriteriaComparisons(allCriteriaComparisons):
 	newDict = {}
+
 	for key, value in allCriteriaComparisons.items():
 		newDict[key] = getRepresentation(value)
 

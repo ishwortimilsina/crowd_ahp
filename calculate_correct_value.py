@@ -7,16 +7,28 @@ import create_alternatives_matrix as am
 import find_faulty_comparisons as ffc
 import operator
 
-def calculateCorrectValue(originalMatrix):
-	faultDict = ffc.findFault(originalMatrix)
+#def loopThroughAndCorrect(sorted_fault, originalMatrix):
+
+
+def calculateCorrectValue(originalMatrix, faultDict=None, changeIndex=0):
+	if (faultDict == None):
+		faultDict = ffc.findFault(originalMatrix)
 
 	# create a sorted array based on value of all keys in the dictionary
 	sorted_fault = sorted(faultDict.items(), key=operator.itemgetter(1))
 	
+	count = 0
 	for key in sorted_fault:
+		print "Index value =====>" + str(changeIndex)
+		print "Count ===========>" + str(count)
+		if changeIndex > count:
+			print "..............continuing....................."
+			count += 1
+			continue		
 		# get the index of each value
 		matIndex = key[0]
-		
+		print "Calculating correct value for " + matIndex
+
 		# split index to get the row and column position of the value to be changed
 		splitIndex = matIndex.split('_')
 		i = int(splitIndex[0])-1
@@ -35,8 +47,11 @@ def calculateCorrectValue(originalMatrix):
 		consVal = cc.consistency(tempMatrix, eigen_vector)
 
 		# if the new matrix is consistent, break the loop otherwise continue
+		print consVal
 		if (consVal[0] == True):
 			break
+
+		count += 1
 
 	if (consVal[0] == False):
 		print "\n*****************************************************************************"
@@ -44,4 +59,4 @@ def calculateCorrectValue(originalMatrix):
 		print "*******************************************************************************\n"
 
 	# return the index of the value to be changed and the value to be changed to
-	return (matIndex, eigen_vector[i]/eigen_vector[j])
+	return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0])

@@ -20,10 +20,14 @@ def createMatrix(size, comparisons):
 # This finds a representative value out of a given array
 def getRepresentation(arr):
 	total = 0
+	count = 0
 	for value in arr:
+		if count == 10:
+			break
 		total += value
+		count += 1
 
-	return total/len(arr)
+	return total/count
 
 
 # This function return a new dictionary with representative value for each key
@@ -44,5 +48,5 @@ def getAlternativesCriteriaMatrix(goal, criteria):
 	allAlternativesComparisons = coll.getAllAlternativesComparisons(goal, criteria)
 
 	allRepresentativeAlternativesComparisons = getAllRepresentativeAlternativesComparisons(allAlternativesComparisons)
-	
+
 	return createMatrix(len(allAlternatives), allRepresentativeAlternativesComparisons)
