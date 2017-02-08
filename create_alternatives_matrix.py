@@ -22,7 +22,7 @@ def getRepresentation(arr):
 	total = 0
 	count = 0
 	for value in arr:
-		if count == 10:
+		if count == 1:
 			break
 		total += value
 		count += 1

@@ -65,15 +65,26 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None, numOfReco
 		else:
 			print "********************************Iterating again*************************************"
 			# return new eigenvector with consistent comparisons
-			if numOfRecords > 60:
-				changeIndex += 1
-				numOfRecords = 10
-				fault_detail = ccv.calculateCorrectValue(originalMatrix, faultDict, changeIndex)
-			else:
-				fault_detail = ccv.calculateCorrectValue(originalMatrix, faultDict, changeIndex)
-			print "NUMBER OF RECORDS ----- " + str(numOfRecords)
+			# if numOfRecords > 60:
+			# 	changeIndex += 1
+			# 	numOfRecords = 1
+			# 	fault_detail = ccv.calculateCorrectValue(originalMatrix, faultDict, changeIndex)
+			# else:
+			# 	fault_detail = ccv.calculateCorrectValue(originalMatrix, faultDict, changeIndex)
+			# print "NUMBER OF RECORDS ----- " + str(numOfRecords)
+			fault_detail = ccv.calculateCorrectValue(originalMatrix)
 
-			numOfRecords += 10
+			if fault_detail[0] == matIndex:
+				if numOfRecords > 60:
+				 	changeIndex += 1
+			 		numOfRecords = 1
+			 		fault_detail = ccv.calculateCorrectValue(originalMatrix, faultDict, changeIndex)
+				numOfRecords += 1
+			else:
+				numOfRecords = 0
+				numOfRecords += 1
+
+			print "NUMBER OF RECORDS ----- " + str(numOfRecords)
 			'''
 			if (criteria):
 				return correctifyFault(fault_detail, originalMatrix, goal, criteria, numOfRecords+10)

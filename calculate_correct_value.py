@@ -20,11 +20,10 @@ def calculateCorrectValue(originalMatrix, faultDict=None, changeIndex=0):
 	count = 0
 	for key in sorted_fault:
 		print "Index value =====>" + str(changeIndex)
-		print "Count ===========>" + str(count)
-		if changeIndex > count:
-			print "..............continuing....................."
-			count += 1
-			continue		
+		# if changeIndex > count:
+		# 	print "..............continuing....................."
+		# 	count += 1
+		# 	continue		
 		# get the index of each value
 		matIndex = key[0]
 		print "Calculating correct value for " + matIndex
