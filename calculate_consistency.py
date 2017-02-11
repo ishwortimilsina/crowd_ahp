@@ -21,7 +21,7 @@ def consistency(originalMatrix, eigenVector):
 
 	consRatio = consIndex/randomIndex[m-1]
 
-	if (consRatio<0.1):
+	if (consRatio<0.07):
 		return (True, consRatio, lambdaMax)
 	else:
 		return (False, consRatio, lambdaMax)

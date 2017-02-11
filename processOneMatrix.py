@@ -32,6 +32,6 @@ def processOneMatrix(goal, criteria=None):
 
 		# return new eigenvector with consistent comparisons
 		if (criteria):
-			return cf.correctifyFault(fault_detail, originalMatrix, goal, criteria, 1)
+			return cf.correctifyFault(fault_detail, originalMatrix, goal, criteria)
 		else:
-			return cf.correctifyFault(fault_detail, originalMatrix, goal, None, 1)
+			return cf.correctifyFault(fault_detail, originalMatrix, goal)

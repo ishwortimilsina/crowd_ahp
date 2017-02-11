@@ -1,5 +1,6 @@
 import sqlite3
 import numpy as np
+from scipy import stats
 
 # Finding all the Criteira comparisons for a goal
 def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRecords):
@@ -24,5 +25,10 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 		return "Record not found"
 	
 	conn.close()
+
+	mean, sigma = np.mean(allCriteriaComparisons), np.std(allCriteriaComparisons)
+
+	conf_int = stats.t.interval(0.95, len(allCriteriaComparisons)-1, loc=mean, scale=sigma)
+	print "Confidence Interval ---> " + str(conf_int)
 	
-	return np.average(allCriteriaComparisons)
+	return (mean, conf_int)

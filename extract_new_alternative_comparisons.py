@@ -1,5 +1,6 @@
 import sqlite3
 import numpy as np
+from scipy import stats
 
 # Finding all the Alternatives comparisons for a goal
 def getNextAlternativesComparisons(sizeMatrix, goal, criteria, alternative_1, alternative_2, numOfRecords):
@@ -27,4 +28,9 @@ def getNextAlternativesComparisons(sizeMatrix, goal, criteria, alternative_1, al
 
 	conn.close()
 
-	return np.average(allAlternativesComparisons)
+	mean, sigma = np.mean(allAlternativesComparisons), stats.sem(allAlternativesComparisons)
+	
+	conf_int = stats.t.interval(0.95, len(allAlternativesComparisons)-1, loc=mean, scale=sigma)
+	print "Confidence Interval ---> " + str(conf_int)
+
+	return (mean, conf_int)

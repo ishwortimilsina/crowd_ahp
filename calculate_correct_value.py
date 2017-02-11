@@ -7,23 +7,23 @@ import create_alternatives_matrix as am
 import find_faulty_comparisons as ffc
 import operator
 
-#def loopThroughAndCorrect(sorted_fault, originalMatrix):
+def calculateCorrectValue(originalMatrix, archiveIndex=[]):
+	
+	print "Archived Indices ---- > " + str(archiveIndex)
 
-
-def calculateCorrectValue(originalMatrix, faultDict=None, changeIndex=0):
-	if (faultDict == None):
-		faultDict = ffc.findFault(originalMatrix)
+	faultDict = ffc.findFault(originalMatrix)
 
 	# create a sorted array based on value of all keys in the dictionary
 	sorted_fault = sorted(faultDict.items(), key=operator.itemgetter(1))
 	
 	count = 0
 	for key in sorted_fault:
-		print "Index value =====>" + str(changeIndex)
-		# if changeIndex > count:
-		# 	print "..............continuing....................."
-		# 	count += 1
-		# 	continue		
+		
+		# if the key is in the archiveIndex it means we do not want to process this anymore
+		# ignore this, continue to next index
+		if str(key[0]) in archiveIndex:
+			continue
+			
 		# get the index of each value
 		matIndex = key[0]
 		print "Calculating correct value for " + matIndex
@@ -42,20 +42,17 @@ def calculateCorrectValue(originalMatrix, faultDict=None, changeIndex=0):
 
 		# get the eigen vector
 		eigen_vector = ce.calculateEigenVector(tempMatrix)
+
 		# get the consistency
 		consVal = cc.consistency(tempMatrix, eigen_vector)
 
 		# if the new matrix is consistent, break the loop otherwise continue
-		print consVal
+		
 		if (consVal[0] == True):
 			break
 
 		count += 1
-
-	if (consVal[0] == False):
-		print "\n*****************************************************************************"
-		print "The whole matrix is wildly inconsistent. Consider restarting the whole process."
-		print "*******************************************************************************\n"
+		print "Count --> " + str(count)
 
 	# return the index of the value to be changed and the value to be changed to
 	return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0])
