@@ -31,7 +31,7 @@ def getNextAlternativesComparisons(sizeMatrix, goal, criteria, alternative_1, al
 
 	mean, sigma = np.mean(allAlternativesComparisons), stats.sem(allAlternativesComparisons)
 	
-	conf_int = stats.t.interval(0.9, len(allAlternativesComparisons)-1, loc=mean, scale=sigma)
+	conf_int = stats.t.interval(0.95, len(allAlternativesComparisons)-1, loc=mean, scale=sigma)
 
 	print "The newest element ---> " + str(allAlternativesComparisons[-1])
 	print "Comparison Mean ---> " + str(mean)

@@ -14,9 +14,8 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 	faultDict = ffc.findFault(originalMatrix)
 
 	# create a sorted array based on value of all keys in the dictionary
-	sorted_fault = sorted(faultDict.items(), key=operator.itemgetter(1))
+	sorted_fault = sorted(faultDict.items(), key=operator.itemgetter(1), reverse=True)
 	
-	count = 0
 	for key in sorted_fault:
 		
 		# if the key is in the archiveIndex it means we do not want to process this anymore
@@ -46,13 +45,5 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 		# get the consistency
 		consVal = cc.consistency(tempMatrix, eigen_vector)
 
-		# if the new matrix is consistent, break the loop otherwise continue
-		
-		if (consVal[0] == True):
-			break
-
-		count += 1
-		print "Count --> " + str(count)
-
-	# return the index of the value to be changed and the value to be changed to
-	return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0])
+		# return the index of the value to be changed and the value to be changed to
+		return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0])

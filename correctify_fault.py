@@ -17,6 +17,7 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 	archiveIndex = []
 
 	while(True):
+		print tempMatrix
 		# get the index of the comparison to correct
 		matIndex = fault_detail[0]
 
@@ -28,9 +29,9 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 		## Let's extract additional 10 records from the database table for this particular comparisons
 		
 		if (criteria):
-			newValueSet = enac.getNextAlternativesComparisons(len(originalMatrix), goal, criteria, i+1, j+1, numOfRecords)
+			newValueSet = enac.getNextAlternativesComparisons(len(tempMatrix), goal, criteria, i+1, j+1, numOfRecords)
 		else:
-			newValueSet = encc.getNextCriteriaComparisons(len(originalMatrix), goal, i+1, j+1, numOfRecords)
+			newValueSet = encc.getNextCriteriaComparisons(len(tempMatrix), goal, i+1, j+1, numOfRecords)
 			
 		newValue = newValueSet[0]
 		conf_interval = newValueSet[1]
@@ -46,9 +47,9 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 		if consVal[0] == True:
 			return eigen_vector
 		else:
-			print "********************************Iterating again*************************************"
+			print "\n********************************Iterating again*************************************\n"
 
-			fault_detail = ccv.calculateCorrectValue(originalMatrix, archiveIndex)
+			fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex)
 
 			if fault_detail[0] == matIndex:
 				if numOfRecords > 20 and newValueSet[2] == True:
@@ -58,10 +59,11 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 			 		if matIndex not in archiveIndex:
 			 			archiveIndex.append(matIndex)
 
-			 		fault_detail = ccv.calculateCorrectValue(originalMatrix, archiveIndex)
+			 		fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex)
 				numOfRecords += 1
 			else:
 				numOfRecords = 1
 				numOfRecords += 1
 
 			print "NUMBER OF RECORDS ----- " + str(numOfRecords)
+

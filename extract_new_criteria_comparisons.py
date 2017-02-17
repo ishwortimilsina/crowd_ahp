@@ -45,7 +45,7 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 	loopBreaker = False
 	# if (meanWithoutLastTwoElement == meanWithoutLastTwoElement and meanWithoutLastThreeElement == meanWithoutLastThreeElement): # to check for Nan
 	# 	if np.abs(mean - meanWithoutLastOneElement) <= 0.03 and np.abs(meanWithoutLastOneElement - meanWithoutLastTwoElement) <= 0.03 and np.abs(meanWithoutLastTwoElement - meanWithoutLastThreeElement) <= 0.03 :
-	if (mean - conf_int[0] <= 0.1):	
+	if (mean - conf_int[0] <= 0.2):	
 		loopBreaker = True
 		print "##################Loop breaker found#################"
 
