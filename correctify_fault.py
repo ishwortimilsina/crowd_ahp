@@ -51,7 +51,7 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 			fault_detail = ccv.calculateCorrectValue(originalMatrix, archiveIndex)
 
 			if fault_detail[0] == matIndex:
-				if numOfRecords > 20:# || checkConfidence():
+				if numOfRecords > 20 and newValueSet[2] == True:
 			 		numOfRecords = 1
 
 			 		# to stop the particular comparison being extracted indefinitely

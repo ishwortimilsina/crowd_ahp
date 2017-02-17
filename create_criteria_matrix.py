@@ -2,8 +2,10 @@ import sqlite3
 import numpy as np
 import criteria_collection as coll
 import operator
+import map_to_scale as mts
 
 def createMatrix(size, comparisons):
+	np.set_printoptions(suppress=True)
 	arr = np.zeros((size,size))
 	for i in range(0,size):
 		for j in range (0, size):
@@ -13,8 +15,9 @@ def createMatrix(size, comparisons):
 				for key, value in comparisons.items():
 					splitKey= key.split('_')
 					if int(splitKey[0])-1 == i and int(splitKey[1])-1==j:
-						arr[i][j] = float(value)
-						arr[j][i] = 1/float(value)
+						# While returning the value, we return the mean that is scaled to range 1/9 to 9
+						arr[i][j] = float(mts.mappingToRequiredScale(value))
+						arr[j][i] = 1/arr[i][j]
 
 	return arr
 

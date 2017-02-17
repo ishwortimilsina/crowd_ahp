@@ -1,6 +1,7 @@
 import sqlite3
 import numpy as np
 from scipy import stats
+import map_to_scale as mts
 
 # Finding all the Criteira comparisons for a goal
 def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRecords):
@@ -29,6 +30,29 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 	mean, sigma = np.mean(allCriteriaComparisons), np.std(allCriteriaComparisons)
 
 	conf_int = stats.t.interval(0.95, len(allCriteriaComparisons)-1, loc=mean, scale=sigma)
-	print "Confidence Interval ---> " + str(conf_int)
 	
-	return (mean, conf_int)
+	print "The newest element ---> " + str(allCriteriaComparisons[-1])	
+	print "Comparison Mean ---> " + str(mean)
+
+	# meanWithoutLastOneElement = np.mean(allCriteriaComparisons[:-1])
+	# meanWithoutLastTwoElement = np.mean(allCriteriaComparisons[:-2])
+	# meanWithoutLastThreeElement = np.mean(allCriteriaComparisons[:-3])
+
+	# print "Comparison Mean without last element " + str(meanWithoutLastOneElement)
+	# print "Comparison Mean without last two element " + str(meanWithoutLastTwoElement)
+	# print "Comparison Mean without last three element " + str(meanWithoutLastThreeElement)
+
+	loopBreaker = False
+	# if (meanWithoutLastTwoElement == meanWithoutLastTwoElement and meanWithoutLastThreeElement == meanWithoutLastThreeElement): # to check for Nan
+	# 	if np.abs(mean - meanWithoutLastOneElement) <= 0.03 and np.abs(meanWithoutLastOneElement - meanWithoutLastTwoElement) <= 0.03 and np.abs(meanWithoutLastTwoElement - meanWithoutLastThreeElement) <= 0.03 :
+	if (mean - conf_int[0] <= 0.1):	
+		loopBreaker = True
+		print "##################Loop breaker found#################"
+
+	print "Confidence Interval ---> " + str(conf_int)
+
+	# While returning the value, we return the mean that is scaled to range 1/9 to 9
+	scaledMean = mts.mappingToRequiredScale(mean)
+	print "Scaled Mean ---> " + str(scaledMean)
+
+	return (scaledMean, conf_int, loopBreaker)
