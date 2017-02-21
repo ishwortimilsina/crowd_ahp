@@ -9,7 +9,7 @@ import operator
 
 def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 	
-	print "Archived Indices ---- > " + str(archiveIndex)
+	#print "Archived Indices ---- > " + str(archiveIndex)
 
 	faultDict = ffc.findFault(originalMatrix)
 
@@ -25,7 +25,6 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 			
 		# get the index of each value
 		matIndex = key[0]
-		print "Calculating correct value for " + matIndex
 
 		# split index to get the row and column position of the value to be changed
 		splitIndex = matIndex.split('_')
@@ -46,4 +45,5 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 		consVal = cc.consistency(tempMatrix, eigen_vector)
 
 		# return the index of the value to be changed and the value to be changed to
+
 		return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0])

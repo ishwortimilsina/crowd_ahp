@@ -2,6 +2,7 @@ import sqlite3
 import numpy as np
 import alternatives_collection as coll
 import map_to_scale as mts
+from scipy import stats
 
 def createMatrix(size, comparisons):
 	np.set_printoptions(suppress=True)
@@ -24,12 +25,19 @@ def createMatrix(size, comparisons):
 def getRepresentation(arr):
 	total = 0
 	count = 0
+	temp = []
 	for value in arr:
+		# temp.append(value)
+		# if count > 5:
+		# 	mean, sigma = np.mean(temp), np.std(temp)
+		# 	conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
+		# 	if (mean - conf_int[0] <= 0.5):
+		# 		break
 		if count == 1:
 			break
 		total += value
 		count += 1
-
+	
 	return total/count
 
 

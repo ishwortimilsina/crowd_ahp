@@ -30,6 +30,7 @@ def getRepresentation(arr):
 			break
 		total += value
 		count += 1
+	
 	return total/count
 
 

@@ -6,6 +6,10 @@ import extract_new_criteria_comparisons as encc
 import calculate_correct_value as ccv
 import find_faulty_comparisons as ffc
 
+def printFinalDetail(indexDict):
+	for key in indexDict:
+		print "Total numbers of inputs needed for " + key + " ---->  " + str(indexDict[key]) 
+
 def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 	
 	numOfRecords = 2
@@ -16,8 +20,10 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 
 	archiveIndex = []
 
+	indexDict = {}
+
 	while(True):
-		print tempMatrix
+		
 		# get the index of the comparison to correct
 		matIndex = fault_detail[0]
 
@@ -43,27 +49,46 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 
 		consVal = cc.consistency(tempMatrix, eigen_vector)
 
-		print consVal
+		#print consVal
 		if consVal[0] == True:
+			print "\n"
+			printFinalDetail(indexDict)
+			print "\n"
+			print tempMatrix
+			print "\n"
 			return eigen_vector
 		else:
-			print "\n********************************Iterating again*************************************\n"
+			#print "\n********************************Iterating again*************************************\n"
+
+			indexDict[matIndex] = numOfRecords
 
 			fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex)
-
+			
 			if fault_detail[0] == matIndex:
+				
 				if numOfRecords > 20 and newValueSet[2] == True:
-			 		numOfRecords = 1
 
 			 		# to stop the particular comparison being extracted indefinitely
 			 		if matIndex not in archiveIndex:
 			 			archiveIndex.append(matIndex)
 
+			 		# calculate fault detail again with updated archiveIndex
 			 		fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex)
+			 		
+			 		# if the index was already taken atleast once before, take num of records from indexDict
+			 		if fault_detail[0] in indexDict:
+						numOfRecords = indexDict[fault_detail[0]]
+					else:
+			 			numOfRecords = 1
+
 				numOfRecords += 1
 			else:
-				numOfRecords = 1
+				if fault_detail[0] in indexDict:
+					numOfRecords = indexDict[fault_detail[0]]
+				else:
+		 			numOfRecords = 1
+				
 				numOfRecords += 1
 
-			print "NUMBER OF RECORDS ----- " + str(numOfRecords)
+			print "Calculating correct value for " + fault_detail[0]
 
