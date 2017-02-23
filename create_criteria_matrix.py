@@ -3,6 +3,7 @@ import numpy as np
 import criteria_collection as coll
 import operator
 import map_to_scale as mts
+from scipy import stats
 
 def createMatrix(size, comparisons):
 	np.set_printoptions(suppress=True)
@@ -25,9 +26,18 @@ def createMatrix(size, comparisons):
 def getRepresentation(arr):
 	total = 0
 	count = 0
+	temp = []
 	for value in arr:
-		if count == 1:
+		temp.append(value)
+		# if count > 5:
+		#if count > 0:
+		mean, sigma = np.mean(temp), np.std(temp)
+		conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
+		print count, value, mean, conf_int
+		if (mean - conf_int[0] <= 0.5) and count >= 5:
 			break
+		# if (mean - conf_int[0] <= 0.5) and count >= 5:
+		# 	break
 		total += value
 		count += 1
 	
@@ -37,8 +47,8 @@ def getRepresentation(arr):
 # This function return a new dictionary with representative value for each key
 def getAllRepresentativeCriteriaComparisons(allCriteriaComparisons):
 	newDict = {}
-
 	for key, value in allCriteriaComparisons.items():
+		print key
 		newDict[key] = getRepresentation(value)
 
 	return newDict

@@ -27,14 +27,16 @@ def getRepresentation(arr):
 	count = 0
 	temp = []
 	for value in arr:
-		# temp.append(value)
+		temp.append(value)
 		# if count > 5:
-		# 	mean, sigma = np.mean(temp), np.std(temp)
-		# 	conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
-		# 	if (mean - conf_int[0] <= 0.5):
-		# 		break
-		if count == 1:
+		#if count > 0:
+		mean, sigma = np.mean(temp), np.std(temp)
+		conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
+		print count, value, mean, conf_int
+		if (mean - conf_int[0] <= 0.5) and count >= 5:
 			break
+		# if (mean - conf_int[0] <= 0.5) and count >= 5:
+		# 	break
 		total += value
 		count += 1
 	
@@ -45,6 +47,7 @@ def getRepresentation(arr):
 def getAllRepresentativeAlternativesComparisons(allAlternativesComparisons):
 	newDict = {}
 	for key, value in allAlternativesComparisons.items():
+		print key
 		newDict[key] = getRepresentation(value)
 
 	return newDict
