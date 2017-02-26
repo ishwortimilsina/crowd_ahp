@@ -16,4 +16,4 @@ def mappingToRequiredScale(value):
 	elif newValue > 9:
 		newValue = 9
 
-	return round(newValue, 8)
+	return round(newValue, 4)

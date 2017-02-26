@@ -9,7 +9,7 @@ import operator
 
 def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 	
-	print "Archived Indices ---- > " + str(archiveIndex)
+	# print "Archived Indices ---- > " + str(archiveIndex)
 
 	faultDict = ffc.findFault(originalMatrix)
 

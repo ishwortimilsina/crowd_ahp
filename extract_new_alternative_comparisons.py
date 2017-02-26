@@ -34,17 +34,18 @@ def getNextAlternativesComparisons(sizeMatrix, goal, criteria, alternative_1, al
 	conf_int = stats.t.interval(0.90, len(allAlternativesComparisons)-1, loc=mean, scale=sigma)
 
 	print "The newest element ---> " + str(allAlternativesComparisons[-1])
-	print "Comparison Mean ---> " + str(mean)
+	print "Comparison Latest Mean ---> " + str(mean)
 
 	loopBreaker = False
 	if (mean - conf_int[0] <= 0.2):
 		loopBreaker = True
-		print "##### LOOP BREAKER #####"
+		# print "##### LOOP BREAKER #####"
 
 	print "Confidence Interval ---> " + str(conf_int)
 
 	# While returning the value, we return the mean that is scaled to range 1/9 to 9
 	scaledMean = mts.mappingToRequiredScale(mean)
-	print "Scaled Mean ---> " + str(scaledMean)
+	# print "Scaled Mean ---> " + str(scaledMean)
+	print "______________________________________________________________________________________"
 
-	return (scaledMean, conf_int, loopBreaker)
+	return (round(scaledMean,4), np.around(conf_int, decimals=4), loopBreaker, round(mean, 4))

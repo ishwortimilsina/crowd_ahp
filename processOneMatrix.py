@@ -19,9 +19,9 @@ def processOneMatrix(goal, criteria=None):
 	#calculate consistency
 	consistencyRatio = cc.consistency(originalMatrix, eigenVector)
 	
-	print "********************************************************************"
-	print originalMatrix
-	print "********************************************************************"
+	print "\n***************************************************************************************\n"
+	# print originalMatrix
+	# print "********************************************************************"
 	# if consistent, return eigenvector other find faulty comparison and correct
 	if consistencyRatio[0] == True:
 		return eigenVector

@@ -32,7 +32,7 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 	conf_int = stats.t.interval(0.90, len(allCriteriaComparisons)-1, loc=mean, scale=sigma)
 	
 	print "The newest element ---> " + str(allCriteriaComparisons[-1])	
-	print "Comparison Mean ---> " + str(mean)
+	print "Comparison Latest Mean ---> " + str(mean)
 
 	loopBreaker = False
 	if (mean - conf_int[0] <= 0.2):	
@@ -42,6 +42,7 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 
 	# While returning the value, we return the mean that is scaled to range 1/9 to 9
 	scaledMean = mts.mappingToRequiredScale(mean)
-	print "Scaled Mean ---> " + str(scaledMean)
+	# print "Scaled Mean ---> " + str(scaledMean)
+	print "______________________________________________________________________________________"
 
-	return (scaledMean, conf_int, loopBreaker)
+	return (round(scaledMean,4), np.around(conf_int, decimals=4), loopBreaker, round(mean, 4))

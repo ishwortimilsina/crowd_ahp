@@ -17,31 +17,34 @@ def createMatrix(size, comparisons):
 					splitKey= key.split('_')
 					if int(splitKey[0])-1 == i and int(splitKey[1])-1==j:
 						# While returning the value, we return the mean that is scaled to range 1/9 to 9
-						arr[i][j] = float(mts.mappingToRequiredScale(value))
+						arr[i][j] = float(mts.mappingToRequiredScale(value[0]))
 						arr[j][i] = 1/arr[i][j]
 
 	return arr
 
 # This finds a representative value out of a given array
 def getRepresentation(arr):
-	total = 0
-	count = 0
+	count = 1
 	temp = []
 	for value in arr:
 		temp.append(value)
-		# if count > 5:
-		#if count > 0:
-		mean, sigma = np.mean(temp), np.std(temp)
-		conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
-		print count, value, mean, conf_int
-		if (mean - conf_int[0] <= 0.5) and count >= 5:
-			break
-		# if (mean - conf_int[0] <= 0.5) and count >= 5:
+		if count > 1:
+			mean, sigma = np.mean(temp), np.std(temp)
+			conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
+			print "New Value -------------> " + str(value)
+			print "Mean ------------------> " + str(mean)
+			print "Confidence Interval ---> " + str(conf_int)
+			print "Number of tuples ------> " + str(count)
+			print "______________________________________________________________________________________"
+			if (np.abs(mean - conf_int[0]) <= 0.8) and count >= 5:
+				break
+		# if count == 3:
 		# 	break
-		total += value
-		count += 1
+
+		if count < 100:
+			count += 1
 	
-	return total/count
+	return round(np.mean(temp), 4), np.around(conf_int, decimals=4), count
 
 
 # This function return a new dictionary with representative value for each key
@@ -50,6 +53,13 @@ def getAllRepresentativeCriteriaComparisons(allCriteriaComparisons):
 	for key, value in allCriteriaComparisons.items():
 		print key
 		newDict[key] = getRepresentation(value)
+		print "______________________________________________________________________________________"
+		print "For this particular cell, "+key+" this is the final tally"
+		print "Mean ------------------> " + str(newDict[key][0])
+		print "Confidence Interval ---> " + str(newDict[key][1])
+		print "Number of tuples ------> " + str(newDict[key][2])
+		print "______________________________________________________________________________________"
+		print "______________________________________________________________________________________"
 
 	return newDict
 
