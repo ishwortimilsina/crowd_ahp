@@ -1,4 +1,4 @@
-import sqlite3
+import math
 import numpy as np
 import alternatives_collection as coll
 import map_to_scale as mts
@@ -25,6 +25,18 @@ def createMatrix(size, comparisons):
 def getRepresentation(arr):
 	count = 1
 	temp = []
+	z = 1.96 # for confidence level of 95%
+	moe = 0.75
+	p = 0.5
+	q = 1-0.5
+	pq = p * q
+
+	n = pq * z * z / (moe * moe)
+	n = math.ceil(n)
+	# sigma = np.std(arr)	
+	# x = z * sigma/0.75
+	# n = math.ceil(x*x)
+	print n
 	for value in arr:
 		temp.append(value)
 		if count > 1:
@@ -35,10 +47,10 @@ def getRepresentation(arr):
 			print "Confidence Interval ---> " + str(conf_int)
 			print "Number of tuples ------> " + str(count)
 			print "______________________________________________________________________________________"
-			if (np.abs(mean - conf_int[0]) <= 0.8) and count >= 5:
-				break
-		# if count == 3:
-		# 	break
+			# if (np.abs(mean - conf_int[0]) <= 0.8) and count >= 5:
+			# 	break
+		if count == n:
+			break
 
 		if count < 100:
 			count += 1
@@ -73,4 +85,4 @@ def getAlternativesCriteriaMatrix(goal, criteria):
 
 	allRepresentativeAlternativesComparisons = getAllRepresentativeAlternativesComparisons(allAlternativesComparisons)
 
-	return createMatrix(len(allAlternatives), allRepresentativeAlternativesComparisons)
+	return createMatrix(len(allAlternatives), allRepresentativeAlternativesComparisons), allRepresentativeAlternativesComparisons

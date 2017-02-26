@@ -10,21 +10,23 @@ def printFinalDetail(indexDict):
 	print "After resolving incosistency"
 	print "______________________________________________________________________________________"
 	for key in indexDict:
-		print "Total numbers of additional inputs needed for " + key + " ---->  " + str(indexDict[key][0] - 1) + " ---> Reformed Mean ---> " + str(indexDict[key][1]) + " ---> Reformed Confidence Interval ---> " + str(indexDict[key][2]) 
+		print "Total numbers of inputs needed for " + key + " ---->  " + str(indexDict[key][0]) + " ---> Reformed Mean ---> " + str(indexDict[key][1]) + " ---> Reformed Confidence Interval ---> " + str(indexDict[key][2]) 
 	print "______________________________________________________________________________________"
 	print "***************************************************************************************\n"
 
 def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 	
-	numOfRecords = 2
+	numOfRecords = 4
 
-	tempMatrix = originalMatrix
+	tempMatrix = originalMatrix[0]
 
-	faultDict = ffc.findFault(originalMatrix)
+	faultDict = ffc.findFault(originalMatrix[0])
 
 	archiveIndex = []
 
 	indexDict = {}
+
+	numOfRecords = originalMatrix[1][fault_detail[0]][2]+1
 
 	while(True):
 		print "Calculating correct value for " + fault_detail[0]
@@ -34,14 +36,13 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 
 		# update number of records for this index 
 		indexDict[matIndex] = [numOfRecords]
-		# print "Number of records ---->" + str(indexDict[matIndex])
+		
 		#get the row and column position of the index
 		splitIndex = matIndex.split('_')
 		i = int(splitIndex[0])-1
 		j = int(splitIndex[1])-1
 
 		## Let's extract additional 10 records from the database table for this particular comparisons
-		
 		if (criteria):
 			newValueSet = enac.getNextAlternativesComparisons(len(tempMatrix), goal, criteria, i+1, j+1, numOfRecords)
 		else:
@@ -59,7 +60,6 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 
 		indexDict[matIndex].append(newValueSet[3])
 		indexDict[matIndex].append(newValueSet[1])
-		# print consVal
 
 		if consVal[0] == True:
 			print "\n"
@@ -71,32 +71,33 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 		else:
 			# print "\n********************************Iterating again*************************************\n"
 
-			fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex)
+			fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex, newValueSet[1][0], newValueSet[1][1])
 			
 			if fault_detail[0] == matIndex:
 				
-				if numOfRecords > 20 and newValueSet[2] == True:
+				if (numOfRecords > 20 and newValueSet[2] == True) or fault_detail[3]==False:
 
 			 		# to stop the particular comparison being extracted indefinitely
 			 		if matIndex not in archiveIndex:
 			 			archiveIndex.append(matIndex)
 
 			 		# calculate fault detail again with updated archiveIndex
-			 		fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex)
+			 		fault_detail = ccv.calculateCorrectValue(tempMatrix, archiveIndex, newValueSet[1][0], newValueSet[1][1])
 			 		
 			 		# if the index was already taken atleast once before, take num of records from indexDict
 			 		if fault_detail[0] in indexDict:
 						numOfRecords = indexDict[fault_detail[0]][0]
 					else:
-			 			numOfRecords = 1
+			 			numOfRecords = originalMatrix[1][fault_detail[0]][2]
 
 				numOfRecords += 1
 			else:
 				if fault_detail[0] in indexDict:
 					numOfRecords = indexDict[fault_detail[0]][0]
 				else:
-		 			numOfRecords = 1
+		 			numOfRecords = originalMatrix[1][fault_detail[0]][2]
 				
 				numOfRecords += 1
 
 
+	return eigen_vector

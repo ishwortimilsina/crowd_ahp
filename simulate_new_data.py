@@ -22,6 +22,10 @@ def simulateNewData(requiredValue, size):
 	#k = np.random.uniform(lowerLimit,upperLimit,size)
 	k = np.random.normal(loc=requiredValue, scale=0.7, size=size)
 
+	
 	return k
 
-#print np.mean(simulateNewData(-3, 10000))
+yo = [-1, 2, 3, 3, 4, 1]
+
+for i in yo:
+	simulateNewData(-3, 100)

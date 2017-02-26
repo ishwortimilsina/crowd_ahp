@@ -7,7 +7,7 @@ import create_alternatives_matrix as am
 import find_faulty_comparisons as ffc
 import operator
 
-def calculateCorrectValue(originalMatrix, archiveIndex=[]):
+def calculateCorrectValue(originalMatrix, archiveIndex=[], left=None, right=None):
 	
 	# print "Archived Indices ---- > " + str(archiveIndex)
 
@@ -44,6 +44,12 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 		# get the consistency
 		consVal = cc.consistency(tempMatrix, eigen_vector)
 
+		# if the required value doesn't fall in the confidence interval no need to get more input
+		flag = True
+		# if left and right:
+		# 	if eigen_vector[i]/eigen_vector[j] < left or eigen_vector[i]/eigen_vector[j] > right :
+		# 		flag = False
+
 		# return the index of the value to be changed and the value to be changed to
 
-		return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0])
+		return (matIndex, eigen_vector[i]/eigen_vector[j], consVal[0], flag)
