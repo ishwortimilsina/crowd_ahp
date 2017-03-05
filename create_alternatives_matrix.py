@@ -27,27 +27,22 @@ def getRepresentation(arr):
 	temp = []
 	z = 1.96 # for confidence level of 95%
 	moe = 0.75
-	p = 0.5
-	q = 1-0.5
-	pq = p * q
-
-	n = pq * z * z / (moe * moe)
+	sigma = 0.75 # range/4 ==> 
+	n = 1/((moe*moe/(z*z*sigma*sigma))+1/100000)
 	n = math.ceil(n)
-	# sigma = np.std(arr)	
-	# x = z * sigma/0.75
-	# n = math.ceil(x*x)
-	print n
+	
+	# print n
 	for value in arr:
 		temp.append(value)
 		if count > 1:
 			mean, sigma = np.mean(temp), np.std(temp)
 			conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
-			print "New Value -------------> " + str(value)
-			print "Mean ------------------> " + str(mean)
-			print "Confidence Interval ---> " + str(conf_int)
-			print "Number of tuples ------> " + str(count)
-			print "______________________________________________________________________________________"
-			# if (np.abs(mean - conf_int[0]) <= 0.8) and count >= 5:
+			# print "New Value -------------> " + str(value)
+			# print "Mean ------------------> " + str(mean)
+			# print "Confidence Interval ---> " + str(conf_int)
+			# print "Number of tuples ------> " + str(count)
+			# print "______________________________________________________________________________________"
+			# if (np.abs(mean - conf_int[0]) <= 0.6) and count >= 5:
 			# 	break
 		if count == n:
 			break
@@ -62,15 +57,15 @@ def getRepresentation(arr):
 def getAllRepresentativeAlternativesComparisons(allAlternativesComparisons):
 	newDict = {}
 	for key, value in allAlternativesComparisons.items():
-		print key
+		# print key
 		newDict[key] = getRepresentation(value)
-		print "______________________________________________________________________________________"
-		print "For this particular cell, "+key+" this is the final tally"
-		print "Mean ------------------> " + str(newDict[key][0])
-		print "Confidence Interval ---> " + str(newDict[key][1])
-		print "Number of tuples ------> " + str(newDict[key][2])
-		print "______________________________________________________________________________________"
-		print "______________________________________________________________________________________"
+		# print "______________________________________________________________________________________"
+		# print "For this particular cell, "+key+" this is the final tally"
+		# print "Mean ------------------> " + str(newDict[key][0])
+		# print "Confidence Interval ---> " + str(newDict[key][1])
+		# print "Number of tuples ------> " + str(newDict[key][2])
+		# print "______________________________________________________________________________________"
+		# print "______________________________________________________________________________________"
 
 	return newDict
 

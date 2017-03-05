@@ -20,7 +20,8 @@ def processOneMatrix(goal, criteria=None):
 	consistencyRatio = cc.consistency(originalMatrix[0], eigenVector)
 	
 	print "\n***************************************************************************************\n"
-	# print originalMatrix
+	# print originalMatrix[0]
+	print consistencyRatio
 	# print "********************************************************************"
 	# if consistent, return eigenvector other find faulty comparison and correct
 	if consistencyRatio[0] == True:
@@ -28,8 +29,8 @@ def processOneMatrix(goal, criteria=None):
 	else:
 		print "\nMatrix is inconsistent. Trying to resolve this\n"
 		# find faulty comparison and calculate value that is optimal
-		fault_detail = ccv.calculateCorrectValue(originalMatrix[0])
-
+		fault_detail = ccv.calculateCorrectValue(originalMatrix)
+		
 		# return new eigenvector with consistent comparisons
 		if (criteria):
 			return cf.correctifyFault(fault_detail, originalMatrix, goal, criteria)

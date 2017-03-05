@@ -1,8 +1,9 @@
+import operator
 import numpy as np
 import processOneMatrix as pom
 import sqlite3
 
-goal = "Select the best movie"
+goal = "Select another best movie"
 
 
 #Get all the criteria for the given goal
@@ -44,5 +45,22 @@ finalMatrix = semiFinalMatrix.T # transposing the matrix
 
 finalPreference = finalMatrix.dot(criteriaWeight) # multiply the transpose with the criteria priority vector
 
-# This is the final ranking
-print finalPreference
+print "\nFinal Ranking\n"
+
+conn = sqlite3.connect(sqlite_file)
+c = conn.cursor()
+
+c.execute('SELECT a.alternative FROM {tn1} a, {tn2} g WHERE g.ROWID=a.goal_id and g.goal="{goal}"'.\
+				format(tn1='alternatives', tn2='goals', goal=goal))
+alternativeName = {}
+i = 0
+for row in c.fetchall():
+	alternativeName[row[0]] = str(finalPreference[i])
+	i += 1
+
+conn.close()
+
+sorted_rank = sorted(alternativeName.items(), key=operator.itemgetter(1), reverse=True)
+
+for key in sorted_rank:
+	print key[0]  + " \t\t\t---> " + key[1]

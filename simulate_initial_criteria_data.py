@@ -10,8 +10,6 @@ def writeIntoDatabase(column1, column2, data, goal, criteria=None):
 	c = conn.cursor()
 
 	for single in data:
-		# if (single < 0) or (single > 9):
-		# 	continue
 		if (criteria):
 			query = 'INSERT OR IGNORE INTO {tn} (goal_id, alternative_1_id, alternative_2_id, value, criteria_id) VALUES ({goal}, {column1}, {column2}, {single}, {criteria_id})'.\
 							format(tn='alternatives_comparisons', column1=column1, column2=column2, single=single, criteria_id=criteria, goal=goal)
@@ -24,16 +22,19 @@ def writeIntoDatabase(column1, column2, data, goal, criteria=None):
 	conn.close()
 
 #myDict = {"1_2":0.3333, "1_3":5, "1_4":7, "2_3":7, "2_4":9, "3_4":3}
-myDict = {"1_2":-1, "1_3":2, "1_4":3, "2_3":3, "2_4":4, "3_4":1}
+#myDict = {"1_2":-1, "1_3":2, "1_4":3, "2_3":3, "2_4":4, "3_4":1}
+
+#myDict = {"1_2":0.3333, "1_3":5, "1_4":7, "1_5":7, "2_3":5, "2_4":9, "2_5":7, "3_4":5, "3_5":5, "4_5":0.3333}
+myDict = {"1_2":-1, "1_3":2, "1_4":3, "1_5":3, "2_3":2, "2_4":4, "2_5":3, "3_4":2, "3_5":2, "4_5":-1}
 
 for key, value in myDict.items() :
     splitKey = key.split('_')
     i = splitKey[0]
     j = splitKey[1]
 
-    newData = smd.simulateNewData(value, 100)
+    newData = smd.simulateNewData(value, 100, 0.7)
     print (value, np.average(newData))
     
-    writeIntoDatabase(i, j, newData, 1)
+    writeIntoDatabase(i, j, newData, 2)
 
 #SELECT AVG(value) FROM criteria_comparisons WHERE criteria_1_id=1 and criteria_2_id=2
