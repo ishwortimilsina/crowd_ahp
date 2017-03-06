@@ -32,7 +32,7 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 
 	conf_int = stats.t.interval(0.90, len(allCriteriaComparisons)-1, loc=mean, scale=sigma)
 	
-	print "The newest element ---> " + str(allCriteriaComparisons[-1])	
+	# print "The newest element ---> " + str(allCriteriaComparisons[-1])	
 	# print "Comparison Latest Mean ---> " + str(mean)
 
 	loopBreaker = False

@@ -33,8 +33,7 @@ for key, value in myDict.items() :
     j = splitKey[1]
 
     newData = smd.simulateNewData(value, 100, 0.7)
+    
     print (value, np.average(newData))
     
     writeIntoDatabase(i, j, newData, 2)
-
-#SELECT AVG(value) FROM criteria_comparisons WHERE criteria_1_id=1 and criteria_2_id=2

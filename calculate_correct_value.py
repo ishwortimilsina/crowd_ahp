@@ -7,14 +7,12 @@ import create_alternatives_matrix as am
 import find_faulty_comparisons as ffc
 
 def calculateCorrectValue(originalMatrix, archiveIndex=[]):
-	
 	# print "Archived Indices ---- > " + str(archiveIndex)
-
 	faultDict = ffc.findFault(originalMatrix)
 	
 	# create a sorted array based on value of all keys in the dictionary
 	sorted_fault = sorted(faultDict.items(), key=operator.itemgetter(1), reverse=False)
-	
+	# print sorted_fault
 	for key in sorted_fault:
 		
 		# to make example 3_4_left tp 3_4
@@ -26,26 +24,9 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 		if str(matIndex) in archiveIndex:
 			continue
 
-		# split index to get the row and column position of the value to be changed
-		# splitIndex = matIndex.split('_')
-		# i = int(splitIndex[0])-1
-		# j = int(splitIndex[1])-1
-		# tempMatrix = np.array(originalMatrix[0])
-
-		# # substitute each i,j and j,j with 0 and corresponding diagonal elements with 2
-		# tempMatrix[i][j] = 0
-		# tempMatrix[j][i] = 0
-		# tempMatrix[i][i] = 2
-		# tempMatrix[j][j] = 2
-
-		# # get the eigen vector
-		# eigen_vector = ce.calculateEigenVector(tempMatrix)
-
-		# # get the consistency
-		# consVal = cc.consistency(tempMatrix, eigen_vector)
-
 		# # if the required value doesn't fall in the confidence interval no need to get more input
 		flag = True
+
 		if key[1] >= 0.1:
 			flag = False
 

@@ -34,7 +34,7 @@ def getRepresentation(arr):
 	# print n
 	for value in arr:
 		temp.append(value)
-		if count > 1:
+		if count >= n:
 			mean, sigma = np.mean(temp), np.std(temp)
 			conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
 			# print "New Value -------------> " + str(value)
@@ -42,20 +42,17 @@ def getRepresentation(arr):
 			# print "Confidence Interval ---> " + str(conf_int)
 			# print "Number of tuples ------> " + str(count)
 			# print "______________________________________________________________________________________"
-			# if (np.abs(mean - conf_int[0]) <= 0.6) and count >= 5:
-			# 	break
-		if count == n:
-			break
+			if (np.abs(mean - conf_int[0]) <= 0.8) or len(temp) == len(arr):
+				break
+		count += 1
 
-		if count < 100:
-			count += 1
-	
 	return round(np.mean(temp), 4), np.around(conf_int, decimals=4), count
 
 
 # This function return a new dictionary with representative value for each key
 def getAllRepresentativeAlternativesComparisons(allAlternativesComparisons):
 	newDict = {}
+	
 	for key, value in allAlternativesComparisons.items():
 		# print key
 		newDict[key] = getRepresentation(value)

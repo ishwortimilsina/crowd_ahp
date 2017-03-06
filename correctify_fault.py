@@ -7,12 +7,12 @@ import calculate_correct_value as ccv
 import find_faulty_comparisons as ffc
 
 def printFinalDetail(indexDict):
-	print "After resolving incosistency"
+	print "After resolving inconsistency"
 	print "______________________________________________________________________________________"
 	for key in indexDict:
 		print "Total numbers of inputs needed for " + key + " ---->  " + str(indexDict[key][0]) + " ---> Reformed Mean ---> " + str(indexDict[key][1]) + " ---> Reformed Confidence Interval ---> " + str(indexDict[key][2]) 
 	print "______________________________________________________________________________________"
-	print "***************************************************************************************\n"
+	# print "***************************************************************************************\n"
 
 def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 
@@ -28,7 +28,7 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 	numOfRecords = originalMatrix[1][fault_detail[0]][2]+1
 
 	while(True):
-		print "Calculating correct value for " + fault_detail[0]
+		# print "Calculating correct value for " + fault_detail[0]
 		
 		# get the index of the comparison to correct
 		matIndex = fault_detail[0]
@@ -63,9 +63,9 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 		indexDict[matIndex].append(newValueSet[3])
 		indexDict[matIndex].append(newValueSet[1])
 
-		print consVal
-
 		if consVal[0] == True:
+			print consVal
+			print "-------- Successful ---------"
 			print "\n"
 			printFinalDetail(indexDict)
 			print "\n"
@@ -75,10 +75,7 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 		else:
 			# print "\n********************************Iterating again*************************************\n"
 
-			fault_detail = ccv.calculateCorrectValue([tempMatrix, tempCellDetails], archiveIndex)
-
-			if  fault_detail[1]==False and numOfRecords>=20:
-				return eigen_vector
+			fault_detail = ccv.calculateCorrectValue([tempMatrix, tempCellDetails], archiveIndex)			
 				
 			if fault_detail[0] == matIndex:
 				
@@ -92,11 +89,13 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 			 		fault_detail = ccv.calculateCorrectValue([tempMatrix, tempCellDetails], archiveIndex)
 			 		
 			 		# if the index was already taken atleast once before, take num of records from indexDict
-
-			 		if fault_detail[0] in indexDict:
-						numOfRecords = indexDict[fault_detail[0]][0]
-					else:
-			 			numOfRecords = originalMatrix[1][fault_detail[0]][2]
+			 		if fault_detail != None:
+				 		if fault_detail[0] in indexDict:
+							numOfRecords = indexDict[fault_detail[0]][0]
+						else:
+				 			numOfRecords = originalMatrix[1][fault_detail[0]][2]
+				 	else:
+				 		break
 
 				numOfRecords += 1
 			else:
@@ -107,5 +106,9 @@ def correctifyFault(fault_detail, originalMatrix, goal, criteria=None):
 				
 				numOfRecords += 1
 
-
+	print consVal
+	if consVal[0] == False:
+		print "------- Unsuccessful --------"
+	print "\n"
+	printFinalDetail(indexDict)
 	return eigen_vector
