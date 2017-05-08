@@ -1,12 +1,7 @@
 import operator
-import numpy as np
-import calculate_eigen as ce
-import calculate_consistency as cc
-import create_criteria_matrix as cm
-import create_alternatives_matrix as am
 import find_faulty_comparisons as ffc
 
-def calculateCorrectValue(originalMatrix, archiveIndex=[]):
+def calculateCorrectValue(originalMatrix, archiveIndex=[], consVal=0):
 	# print "Archived Indices ---- > " + str(archiveIndex)
 	faultDict = ffc.findFault(originalMatrix)
 	
@@ -27,7 +22,7 @@ def calculateCorrectValue(originalMatrix, archiveIndex=[]):
 		# # if the required value doesn't fall in the confidence interval no need to get more input
 		flag = True
 
-		if key[1] >= 0.1:
+		if key[1] >= consVal:
 			flag = False
 
 		# return the index of the value to be changed and the value to be changed to	

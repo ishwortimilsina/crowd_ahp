@@ -36,7 +36,7 @@ def getNextCriteriaComparisons(sizeMatrix, goal, criteria_1, criteria_2, numOfRe
 	# print "Comparison Latest Mean ---> " + str(mean)
 
 	loopBreaker = False
-	if (mean - conf_int[0] <= 0.2):	
+	if (np.abs(mean - conf_int[0]) <= 0.3):
 		loopBreaker = True
 
 	# print "Confidence Interval ---> " + str(conf_int)

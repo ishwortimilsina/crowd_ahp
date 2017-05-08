@@ -1,13 +1,14 @@
-import csv
-import numpy as np
 import calculate_eigen as ce
 import calculate_consistency as cc
+import calculate_correct_value as ccv
 import create_criteria_matrix as cm
 import create_alternatives_matrix as am
-import calculate_correct_value as ccv
 import correctify_fault as cf
 
 def processOneMatrix(goal, criteria=None):
+	print "\n***************************************************************************************\n"
+	print "Stage 1"
+	print "______________________________________________________________________________________"
 	if (criteria):
 		originalMatrix = am.getAlternativesCriteriaMatrix(goal, criteria)
 	else:
@@ -18,18 +19,25 @@ def processOneMatrix(goal, criteria=None):
 	
 	#calculate consistency
 	consistencyRatio = cc.consistency(originalMatrix[0], eigenVector)
-	
-	print "\n***************************************************************************************\n"
+
 	# print originalMatrix[0]
-	print consistencyRatio
+	# print consistencyRatio
 	# print "********************************************************************"
 	# if consistent, return eigenvector other find faulty comparison and correct
 	if consistencyRatio[0] == True:
+		print "Consistent, CR = " + str(consistencyRatio[1])
 		return eigenVector
 	else:
-		print "\nMatrix is inconsistent. Trying to resolve this\n"
+		print "\n"
+		print "Stage 2"
+		print "______________________________________________________________________________________"
+		if consistencyRatio[0] == True:
+			print "Consistent, CR = " + str(consistencyRatio[1])
+		else:
+			print "Inconsistent, CR = " + str(consistencyRatio[1])
+		print "\n"
 		# find faulty comparison and calculate value that is optimal
-		fault_detail = ccv.calculateCorrectValue(originalMatrix)
+		fault_detail = ccv.calculateCorrectValue(originalMatrix, [], consistencyRatio[1])
 		
 		# return new eigenvector with consistent comparisons
 		if (criteria):

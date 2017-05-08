@@ -5,6 +5,7 @@ import map_to_scale as mts
 
 # Finding all the Alternatives comparisons for a goal
 def getNextAlternativesComparisons(sizeMatrix, goal, criteria, alternative_1, alternative_2, numOfRecords):
+	
 	sqlite_file = 'crowd_ahp.sqlite'    # name of the sqlite database file
 
 	# Connecting to the database file
@@ -37,7 +38,7 @@ def getNextAlternativesComparisons(sizeMatrix, goal, criteria, alternative_1, al
 	# print "Comparison Latest Mean ---> " + str(mean)
 
 	loopBreaker = False
-	if (mean - conf_int[0] <= 0.2):
+	if (np.abs(mean - conf_int[0]) <= 0.3):
 		loopBreaker = True
 		# print "##### LOOP BREAKER #####"
 

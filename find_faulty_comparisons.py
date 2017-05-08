@@ -35,7 +35,7 @@ def findFault(originalMatrix):
 	cells = originalMatrix[1]
 
 	crDict = {}
-
+	
 	for key in cells:
 		# get the index of each value
 		matIndex = key
@@ -45,37 +45,65 @@ def findFault(originalMatrix):
 		i = int(splitIndex[0])-1
 		j = int(splitIndex[1])-1
 
-		checkInterval = (cells[key][1][1] - cells[key][1][0])/4
-		x = cells[key][1][0]
+		# replace each element and its recriprocal element by 
+		# left_confidence of the current mean distribution of cell
+		tempMatrix[i][j] = mts.mappingToRequiredScale(cells[key][1][0])
+		tempMatrix[j][i] = 1/tempMatrix[i][j]
+
+		# find the eigen vector
+		eigen_vector = ce.calculateEigenVector(tempMatrix)
 		
-		count = 1
-		while (True):
+		# find lamdamax of each modified matrix and store it in the dict with modified index
+		crDict[str(i+1)+"_"+str(j+1)+"_left"] = cc.consistency(tempMatrix, eigen_vector)[1]
 
-			# replace each element and its recriprocal element by 
-			# left_confidence of the current mean distribution of cell
-			tempMatrix[i][j] = mts.mappingToRequiredScale(x)
-			tempMatrix[j][i] = 1/tempMatrix[i][j]
+		# replace each element and its recriprocal element by 
+		# right_confidence of the current mean distribution of cell
+		tempMatrix[i][j] = mts.mappingToRequiredScale(cells[key][1][1])
+		tempMatrix[j][i] = 1/tempMatrix[i][j]
 
-			# find the eigen vector
-			eigen_vector = ce.calculateEigenVector(tempMatrix)
-			
-			# find lamdamax of each modified matrix and store it in the dict with modified index
-			crDict[str(i+1)+"_"+str(j+1)+"_"+countDict[count]] = cc.consistency(tempMatrix, eigen_vector)[1]
+		# find the eigen vector
+		eigen_vector = ce.calculateEigenVector(tempMatrix)
+		
+		# find lamdamax of each modified matrix and store it in the dict with modified index
+		crDict[str(i+1)+"_"+str(j+1)+"_right"] = cc.consistency(tempMatrix, eigen_vector)[1]
 
-			tempMatrix = np.array(originalMatrix[0])
+		tempMatrix = np.array(originalMatrix[0])
 
-			# calculate CR for each five values in the confidence interval
-			if checkInterval>0:
-				x = x + checkInterval
-			else:
-				x = x - checkInterval
-
-			if x > cells[key][1][1]:
-				x = cells[key][1][1]
-
-			if count == 5:
-				break
-			
-			count += 1
-
+	print crDict
 	return crDict
+
+
+	# for key in cells:
+	# 	# get the index of each value
+	# 	matIndex = key
+
+	# 	# split index to get the row and column position of the value to be changed
+	# 	splitIndex = matIndex.split('_')
+	# 	i = int(splitIndex[0])-1
+	# 	j = int(splitIndex[1])-1
+
+	# 	# replace each element and its recriprocal element by 
+	# 	# left_confidence of the current mean distribution of cell
+	# 	tempMatrix[i][j] = mts.mappingToRequiredScale(cells[key][1][0])
+	# 	tempMatrix[j][i] = 1/tempMatrix[i][j]
+
+	# 	# find the eigen vector
+	# 	eigen_vector = ce.calculateEigenVector(tempMatrix)
+		
+	# 	# find lamdamax of each modified matrix and store it in the dict with modified index
+	# 	crDict[str(i+1)+"_"+str(j+1)+"_left"] = cc.consistency(tempMatrix, eigen_vector)[1]
+
+	# 	# replace each element and its recriprocal element by 
+	# 	# right_confidence of the current mean distribution of cell
+	# 	tempMatrix[i][j] = mts.mappingToRequiredScale(cells[key][1][1])
+	# 	tempMatrix[j][i] = 1/tempMatrix[i][j]
+
+	# 	# find the eigen vector
+	# 	eigen_vector = ce.calculateEigenVector(tempMatrix)
+		
+	# 	# find lamdamax of each modified matrix and store it in the dict with modified index
+	# 	crDict[str(i+1)+"_"+str(j+1)+"_right"] = cc.consistency(tempMatrix, eigen_vector)[1]
+
+	# 	tempMatrix = np.array(originalMatrix[0])
+
+	# return crDict

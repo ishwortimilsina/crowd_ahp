@@ -26,22 +26,17 @@ def getRepresentation(arr):
 	count = 1
 	temp = []
 	z = 1.96 # for confidence level of 95%
-	moe = 0.75
-	sigma = 0.75 # range/4 ==> 
+	moe = 2
+	sigma = 2 # range/4 ==> 
 	n = 1/((moe*moe/(z*z*sigma*sigma))+1/100000)
 	n = math.ceil(n)
 	
-	# print n
+	print n
 	for value in arr:
 		temp.append(value)
 		if count >= n:
 			mean, sigma = np.mean(temp), np.std(temp)
-			conf_int = stats.t.interval(0.70, len(temp)-1, loc=mean, scale=sigma)
-			# print "New Value -------------> " + str(value)
-			# print "Mean ------------------> " + str(mean)
-			# print "Confidence Interval ---> " + str(conf_int)
-			# print "Number of tuples ------> " + str(count)
-			# print "______________________________________________________________________________________"
+			conf_int = stats.t.interval(0.90, len(temp)-1, loc=mean, scale=sigma)
 			if (np.abs(mean - conf_int[0]) <= 0.8) or len(temp) == len(arr):
 				break
 		count += 1
@@ -52,18 +47,13 @@ def getRepresentation(arr):
 # This function return a new dictionary with representative value for each key
 def getAllRepresentativeAlternativesComparisons(allAlternativesComparisons):
 	newDict = {}
-	
+	sumx = 0
 	for key, value in allAlternativesComparisons.items():
-		# print key
 		newDict[key] = getRepresentation(value)
-		# print "______________________________________________________________________________________"
-		# print "For this particular cell, "+key+" this is the final tally"
-		# print "Mean ------------------> " + str(newDict[key][0])
-		# print "Confidence Interval ---> " + str(newDict[key][1])
-		# print "Number of tuples ------> " + str(newDict[key][2])
-		# print "______________________________________________________________________________________"
-		# print "______________________________________________________________________________________"
+		print "Cell "+key+"--> Inputs: " + str(newDict[key][2]) + "; Mean: " + str(newDict[key][0]) + "; Confidence Interval: " + str(newDict[key][1])
+		sumx = sumx + newDict[key][2]
 
+	print "Stage 1 inputs: " + str(sumx)
 	return newDict
 
 ########################################################################################

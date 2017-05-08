@@ -3,7 +3,8 @@ import numpy as np
 import processOneMatrix as pom
 import sqlite3
 
-goal = "Select best Movie - small data - small variance"
+# goal = "Select best Movie - small data - small variance"
+goal = "Select the best movie"
 
 
 #Get all the criteria for the given goal
@@ -25,12 +26,15 @@ for row in c.fetchall():
 conn.close()
 ########################################################################
 
-
+print "\n***************************************************************************************"
+print "Criteria Matrix"
 criteriaWeight = pom.processOneMatrix(goal_id)
 
 allCriteria = np.sort(allCriteria)
 
 for i in allCriteria:
+	print "\n***************************************************************************************"
+	print "Alternative matrix " + str(i)
 	semiFinalMatrix = np.array(pom.processOneMatrix(goal_id, i))
 	break
 
@@ -38,6 +42,8 @@ for i in allCriteria:
 for i in allCriteria:
 	if (i == allCriteria[0]):
 		continue
+	print "\n***************************************************************************************"
+	print "Alternative matrix " + str(i)
 	semiFinalMatrix = np.vstack([semiFinalMatrix, pom.processOneMatrix(goal_id, i)])
 
 finalMatrix = semiFinalMatrix.T # transposing the matrix
